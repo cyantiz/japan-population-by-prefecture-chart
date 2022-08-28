@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const API_ENDPOINTS = 'https://opendata.resas-portal.go.jp';
 const PREFIX = '/api/v1';
-const API_KEY = import.meta.env.VITE_API_KEY;
+const API_KEY = import.meta.env.VITE_VERCEL_ENV_API_KEY;
 
 axios.defaults.baseURL = `${API_ENDPOINTS}${PREFIX}`;
 axios.defaults.headers.common['X-API-KEY'] = API_KEY;
