@@ -14,7 +14,7 @@ body {
     margin: 0;
     height: 100vh;
     width: 100vw;
-    overflow: hidden;
+    overflow-x: hidden;
     font-family: 'Roboto', 'Zen Kaku Gothic New', sans-serif;
 }
 

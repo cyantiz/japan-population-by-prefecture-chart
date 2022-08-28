@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./style.css";
 import { getAllPrefecture, getNumberOfPopulation } from "@/utils/api";
 import Prefectures from "@/components/Population/PrefectureList";
@@ -7,44 +7,44 @@ import MenuIcon from '@/assets/menu-icon.svg'
 import _ from "lodash";
 
 export default function Population() {
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [isShowListMobile, setIsShowListMobile] = useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [isError, setIsError] = React.useState(false);
+    const [isShowListMobile, setIsShowListMobile] = React.useState(false);
 
     // store population data get from api
     const [chartData, setChartData] = React.useState<ChartDataPoint[]>([]);
 
     // store list of prefecture (include name and code)
-    const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
+    const [prefectures, setPrefectures] = React.useState<Prefecture[]>([]);
 
     // store list of  selected prefecture (change when user toggle the prefecture)
-    const [selectedPrefectures, setSelectedPrefecture] = useState<Prefecture[]>(
-        []
-    );
+    const [selectedPrefectures, setSelectedPrefecture] = React.useState<Prefecture[]>([]);
 
     // store list of prefecture that is currently showing on the chart
-    const [showPrefectures, setShowPrefectures] = useState<Prefecture[]>([]);
+    const [showPrefectures, setShowPrefectures] = React.useState<Prefecture[]>([]);
 
     // store list of prefecture that is loaded and has been stored in chartData
     // => in order to prevent duplicate loading of data
-    const [loadedPrefectures, setLoadedPrefectures] = useState<Prefecture[]>(
+    const [loadedPrefectures, setLoadedPrefectures] = React.useState<Prefecture[]>(
         []
     );
 
-    /* flow: 
-        * (useEffect) get all prefecture data from api => store in prefectures
-        * whenever user toggle the prefecture [ON]:
+    /* FLOW: 
+        * RUN ON INITIAL (useEffect)
+            + check if data is existed in localStorage, if existed -> use it
+            + get all prefecture data from api => store in prefectures
+        * EVENT: user toggle [ON] a prefecture:
             + add prefecture to selectedPrefectures
             + load data for the prefecture if it is not loaded yet (using function addData)
             + add data to chartData
             + add prefecture to showPrefectures
-        * whenever user toggle the prefecture [OFF]:
+        * EVENT: user toggle [OFF] a prefecture
             + remove prefecture from selectedPrefectures
             + remove prefecture from showPrefectures
             (data still in chartData)
     */
 
-    useEffect(() => {
+    React.useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
             try {
@@ -56,7 +56,6 @@ export default function Population() {
                 if (!prefs || prefs.length !== numberOfPref) {
                     prefs = await getAllPrefecture();
                     setPrefectures(prefs);
-                    console.log("prefs:", prefs);
                     localStorage.setItem("prefectures", JSON.stringify(prefs));
                 } else {
                     setPrefectures(prefs);
@@ -67,9 +66,11 @@ export default function Population() {
                 );
                 if (chartData.length > 0) {
                     setChartData(chartData);
+                    
                     const loadedPrefs = JSON.parse(
                         localStorage.getItem("loadedPrefectures") || "[]"
                     );
+
                     if (loadedPrefs.length > 0) {
                         setLoadedPrefectures(loadedPrefs);
                     }
@@ -78,11 +79,8 @@ export default function Population() {
                     const firstYearInData = 1960;
                     const lastYearInData = 2045;
                     const tmpData = [];
-                    for (
-                        let year = firstYearInData;
-                        year <= lastYearInData;
-                        year += 5
-                    ) {
+                    
+                    for ( let year = firstYearInData; year <= lastYearInData; year += 5) {
                         tmpData.push({ year });
                     }
                     setChartData(tmpData);
@@ -98,23 +96,21 @@ export default function Population() {
     }, []);
 
     const addData = async (pref: Prefecture) => {
-        // check if data is already loaded
+        // check if data is already loaded, if not, load data from api
         if (loadedPrefectures.includes(pref)) {
             return;
         }
-        let tmpData = chartData;
+        let newChartData = chartData;
         let prefPopulation = await getNumberOfPopulation(pref.prefCode);
         prefPopulation = _.map(prefPopulation, (item: any) => ({
             year: item.year,
             [pref.prefName]: item.value,
         }));
-        tmpData = _.merge(tmpData, prefPopulation);
-        setChartData(tmpData);
+        newChartData = _.merge(newChartData, prefPopulation);
+        setChartData(newChartData);
         setLoadedPrefectures([...loadedPrefectures, pref]);
-        localStorage.setItem("chartData", JSON.stringify(tmpData));
-        localStorage.setItem(
-            "loadedPrefectures",
-            JSON.stringify([...loadedPrefectures, pref])
+        localStorage.setItem("chartData", JSON.stringify(newChartData));
+        localStorage.setItem("loadedPrefectures", JSON.stringify([...loadedPrefectures, pref])
         );
     };
 
@@ -132,8 +128,8 @@ export default function Population() {
                     <img className="menu-icon" src={MenuIcon} alt="#" onClick={handleToggleListMobile} />
                 </div>
             </div>
-            {isLoading && <div className="__loading">Loading...</div>}
-            {isError && <div>Error</div>}
+            {isLoading && <div className="population__loading">Loading...</div>}
+            {isError && <div> There is an error. Please refresh the page. </div>}
             {!isLoading && !isError && (
                 <>
                     <div className="population__content">

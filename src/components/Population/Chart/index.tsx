@@ -21,7 +21,6 @@ interface PopulationChartProps {
 export default function PopulationChart(props: PopulationChartProps) {
     return (
         <>
-            {/* {props.data.length && ( */}
             <ResponsiveContainer width="99%" height={500}>
                 <LineChart
                     data={props.data}
@@ -50,7 +49,6 @@ export default function PopulationChart(props: PopulationChartProps) {
                     })}
                 </LineChart>
             </ResponsiveContainer>
-            {/* )} */}
         </>
     );
 }
