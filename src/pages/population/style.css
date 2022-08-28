@@ -21,7 +21,7 @@
 
 .population__chart-wrapper {
     flex: auto;
-    max-width: calc(100vw - 4*8rem + 3*0.75rem )
+    max-width: calc(100vw - 4 * 8rem + 3 * 0.75rem);
 }
 
 .population__content {
@@ -72,7 +72,6 @@
         padding: 0.75rem;
     }
 
-    
     .population__navbar__title {
         font-size: 0.8rem;
     }
@@ -93,14 +92,13 @@
         background: white;
         z-index: 777;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        transition: all ease .6s;
+        transition: all ease 0.6s;
         padding-top: 4.5rem;
         padding-bottom: 2rem;
     }
     .population__prefecture-list-wrapper.mobile-active {
         top: 0px;
     }
-
 }
 
 @media (max-width: 399px) {

@@ -10,7 +10,6 @@ import {
     YAxis,
 } from "recharts";
 import "./style.css";
-import _ from "lodash";
 import colors from "@/utils/colors";
 
 interface PopulationChartProps {
@@ -43,8 +42,7 @@ export default function PopulationChart(props: PopulationChartProps) {
                                 stroke={colors[prefecture.prefCode]}
                                 key={prefecture.prefName}
                                 dot={false}
-                            >
-                            </Line>
+                            ></Line>
                         );
                     })}
                 </LineChart>

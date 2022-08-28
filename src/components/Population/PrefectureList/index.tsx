@@ -1,5 +1,5 @@
 import React from "react";
-import _ from 'lodash'
+import _ from "lodash";
 import "./style.css";
 import Switch from "@/components/common/Switch";
 import Button from "@/components/common/Button";
@@ -8,7 +8,7 @@ interface PrefecturesProp {
     selectedPrefectures: Array<Prefecture>;
     setSelectedPrefectures: (prefectures: Array<Prefecture>) => void;
     setShowPrefectures: (prefectures: Array<Prefecture>) => void;
-    addData: (pref: Prefecture) => Promise<void>
+    addData: (pref: Prefecture) => Promise<void>;
 }
 
 export default function PrefectureList(props: PrefecturesProp) {
@@ -21,16 +21,22 @@ export default function PrefectureList(props: PrefecturesProp) {
     const handleToggleOffAll = () => {
         props.setSelectedPrefectures([]);
         props.setShowPrefectures([]);
-    }
+    };
 
     return (
         <>
             <ul className="prefecture-list__list">
                 {props.prefectures.map((prefecture: Prefecture) => {
                     return (
-                        <li key={prefecture.prefCode} className="prefecture-list__item">
+                        <li
+                            key={prefecture.prefCode}
+                            className="prefecture-list__item"
+                        >
                             <Switch
-                                checked={_.includes(props.selectedPrefectures, prefecture)}
+                                checked={_.includes(
+                                    props.selectedPrefectures,
+                                    prefecture
+                                )}
                                 onChange={() => handleToggle(prefecture)}
                             />
                             {prefecture.prefName}
@@ -38,10 +44,12 @@ export default function PrefectureList(props: PrefecturesProp) {
                     );
                 })}
             </ul>
-            <Button className="prefecture-list__toggle-off-all-btn" onClick={handleToggleOffAll}>
+            <Button
+                className="prefecture-list__toggle-off-all-btn"
+                onClick={handleToggleOffAll}
+            >
                 すべてスイッチオフ
             </Button>
         </>
-
     );
 }

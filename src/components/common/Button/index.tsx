@@ -1,5 +1,5 @@
-import React from 'react'
-import './style.css'
+import React from "react";
+import "./style.css";
 interface ButtonProps {
     children: React.ReactNode;
     className: string;
@@ -8,8 +8,11 @@ interface ButtonProps {
 
 export default function Button(props: ButtonProps) {
     return (
-        <button className={"__button " + props.className}  onClick={props.onClick}>
+        <button
+            className={"__button " + props.className}
+            onClick={props.onClick}
+        >
             {props.children}
         </button>
-    )
+    );
 }

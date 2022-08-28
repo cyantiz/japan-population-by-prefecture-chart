@@ -2,7 +2,7 @@
     font-size: 0.8rem;
 }
 
-@media(max-width: 1179px) {
+@media (max-width: 1179px) {
     .recharts-legend-item-text {
         font-size: 0.8rem;
     }
