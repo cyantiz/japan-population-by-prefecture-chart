@@ -1,9 +1,6 @@
 .container {
     width: 100vw;
-    padding-inline: 3rem;
-}
-.prefecture-list-wrapper {
-    /* flex: auto; */
+    padding: 2rem 3rem;
 }
 
 .chart-wrapper {

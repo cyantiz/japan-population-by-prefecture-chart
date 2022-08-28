@@ -46,21 +46,40 @@ export default function Population() {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const prefs = await getAllPrefecture();
-                setPrefectures(prefs);
-
-                // init data for chartData
-                const firstYearInData = 1960;
-                const lastYearInData = 2045;
-                const tmpData = [];
-                for (
-                    let year = firstYearInData;
-                    year <= lastYearInData;
-                    year += 5
-                ) {
-                    tmpData.push({ year });
+                const numberOfPref = 47;
+                let prefs = JSON.parse(localStorage.getItem("prefectures") || "[]");
+                if (prefs.length === numberOfPref) {
+                    setPrefectures(prefs);
+                } else {
+                    prefs = await getAllPrefecture();
+                    setPrefectures(prefs);
+                    console.log('prefs:', prefs);
+                    localStorage.setItem('prefectures', JSON.stringify(prefs));
                 }
-                setChartData(tmpData);
+
+                const chartData = JSON.parse(localStorage.getItem("chartData") || "[]");
+                if (chartData.length > 0) {
+                    setChartData(chartData);
+                    const loadedPrefs =  JSON.parse(localStorage.getItem("loadedPrefectures") || "[]");
+                    if (loadedPrefs.length > 0) {   
+                        setLoadedPrefectures(loadedPrefs);
+                    }
+                }    
+                else {
+                    // init data for chartData
+                    const firstYearInData = 1960;
+                    const lastYearInData = 2045;
+                    const tmpData = [];
+                    for (
+                        let year = firstYearInData;
+                        year <= lastYearInData;
+                        year += 5
+                    ) {
+                        tmpData.push({ year });
+                    }
+                    setChartData(tmpData);
+                }
+
             } catch (e) {
                 setIsError(true);
             } finally {
@@ -84,11 +103,13 @@ export default function Population() {
         tmpData = _.merge(tmpData, prefPopulation);
         setChartData(tmpData);
         setLoadedPrefectures([...loadedPrefectures, pref]);
+        localStorage.setItem("chartData", JSON.stringify(tmpData));
+        localStorage.setItem("loadedPrefectures", JSON.stringify([...loadedPrefectures, pref]));
     };
 
     return (
         <div className="container">
-            <h1></h1>
+            <h2 className="title">都道府県別の総人口推移グラフ</h2>
             {isLoading && <div>Loading...</div>}
             {isError && <div>Error</div>}
             {!isLoading && !isError && (

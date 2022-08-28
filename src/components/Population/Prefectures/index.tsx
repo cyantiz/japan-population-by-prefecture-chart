@@ -19,8 +19,8 @@ export default function Prefectures(props: PrefecturesProp) {
         props.setShowPrefectures(newSelectedPrefecture);
     };
     const handleToggleOffAll = () => {
-        const { setSelectedPrefectures } = props;
-        setSelectedPrefectures([]);
+        props.setSelectedPrefectures([]);
+        props.setShowPrefectures([]);
     }
 
     return (
@@ -41,7 +41,7 @@ export default function Prefectures(props: PrefecturesProp) {
             <div className="buttons-wrapper flex">
                 <div className="toggle-off-all-btn">
                     <Button onClick={handleToggleOffAll}>
-                        Toggle Off All
+                        すべてスイッチオフ
                     </Button>
                 </div>
             </div>
