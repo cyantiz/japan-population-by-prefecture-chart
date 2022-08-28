@@ -4,6 +4,8 @@ Japan's population by prefectures (1960 - 2045)
 
 API Source: [RESAS](https://opendata.resas-portal.go.jp/)
 
+<!-- Image Preview.png in public folder -->
+![Preview](public/Preview.png)
 ## Demo
 
 https://japan-population.vercel.app/
