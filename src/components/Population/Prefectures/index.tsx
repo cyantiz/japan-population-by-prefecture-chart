@@ -1,23 +1,26 @@
 import React from "react";
+import _ from 'lodash'
 import "./style.css";
 import Switch from "@/components/common/Switch";
-import _ from 'lodash'
 import Button from "@/components/common/Button";
 interface PrefecturesProp {
     prefectures: Array<Prefecture>;
-    selectedPrefecture: Array<number>;
-    setSelectedPrefecture: (prefCode: number[]) => void;
+    selectedPrefectures: Array<Prefecture>;
+    setSelectedPrefectures: (prefectures: Array<Prefecture>) => void;
+    setShowPrefectures: (prefectures: Array<Prefecture>) => void;
+    addData: (pref: Prefecture) => Promise<void>
 }
 
 export default function Prefectures(props: PrefecturesProp) {
-    const handleToggle = (prefCode: number) => {
-        const { selectedPrefecture, setSelectedPrefecture } = props;
-        const newSelectedPrefecture = _.xor(selectedPrefecture, [prefCode]);
-        setSelectedPrefecture(newSelectedPrefecture);
+    const handleToggle = async (pref: Prefecture) => {
+        const newSelectedPrefecture = _.xor(props.selectedPrefectures, [pref]);
+        props.setSelectedPrefectures(newSelectedPrefecture);
+        await props.addData(pref);
+        props.setShowPrefectures(newSelectedPrefecture);
     };
     const handleToggleOffAll = () => {
-        const { setSelectedPrefecture } = props;
-        setSelectedPrefecture([]);
+        const { setSelectedPrefectures } = props;
+        setSelectedPrefectures([]);
     }
 
     return (
@@ -27,8 +30,8 @@ export default function Prefectures(props: PrefecturesProp) {
                     return (
                         <li key={prefecture.prefCode} className="prefecture-list__item">
                             <Switch
-                                checked={props.selectedPrefecture.includes(prefecture.prefCode)}
-                                onChange={() => handleToggle(prefecture.prefCode)}
+                                checked={_.includes(props.selectedPrefectures, prefecture)}
+                                onChange={() => handleToggle(prefecture)}
                             />
                             {prefecture.prefName}
                         </li>

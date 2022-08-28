@@ -4,7 +4,8 @@ import Population from "./pages/population";
 
 function App() {
     return (
-        <div className="App">
+        <div className="__app">
+            <div className="__loading"></div>
             <Population />
         </div>
     );
