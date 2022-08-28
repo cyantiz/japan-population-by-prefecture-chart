@@ -22,29 +22,34 @@ export default function PopulationChart(props: PopulationChartProps) {
     return (
         <>
             {/* {props.data.length && ( */}
-                <ResponsiveContainer width="99%" height={1000}>
-                    <LineChart
-                        data={props.data}
-                        margin={{ top: 5, right: 40, left: 40, bottom: 5 }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="year" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        {props.showPrefectures.map((prefecture: Prefecture) => {
-                            return (
-                                <Line
-                                    type="monotone"
-                                    dataKey={prefecture.prefName}
-                                    stroke={colors[prefecture.prefCode]}
-                                    key={prefecture.prefName}
-                                />
-                            );
-                        }
-                        )}
-                    </LineChart>
-                </ResponsiveContainer>
+            <ResponsiveContainer width="99%" height={500}>
+                <LineChart
+                    data={props.data}
+                    margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="year" />
+                    <YAxis domain={[0, 15000000]} />
+                    <Legend
+                        layout="horizontal"
+                        verticalAlign="bottom"
+                        align="right"
+                    />
+                    <Tooltip />
+                    {props.showPrefectures.map((prefecture: Prefecture) => {
+                        return (
+                            <Line
+                                type="monotone"
+                                dataKey={prefecture.prefName}
+                                stroke={colors[prefecture.prefCode]}
+                                key={prefecture.prefName}
+                                dot={false}
+                            >
+                            </Line>
+                        );
+                    })}
+                </LineChart>
+            </ResponsiveContainer>
             {/* )} */}
         </>
     );

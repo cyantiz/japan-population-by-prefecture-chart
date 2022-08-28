@@ -11,7 +11,7 @@ interface PrefecturesProp {
     addData: (pref: Prefecture) => Promise<void>
 }
 
-export default function Prefectures(props: PrefecturesProp) {
+export default function PrefectureList(props: PrefecturesProp) {
     const handleToggle = async (pref: Prefecture) => {
         const newSelectedPrefecture = _.xor(props.selectedPrefectures, [pref]);
         props.setSelectedPrefectures(newSelectedPrefecture);
@@ -25,7 +25,7 @@ export default function Prefectures(props: PrefecturesProp) {
 
     return (
         <>
-            <ul className="prefecture-list">
+            <ul className="prefecture-list__list">
                 {props.prefectures.map((prefecture: Prefecture) => {
                     return (
                         <li key={prefecture.prefCode} className="prefecture-list__item">
@@ -38,13 +38,9 @@ export default function Prefectures(props: PrefecturesProp) {
                     );
                 })}
             </ul>
-            <div className="buttons-wrapper flex">
-                <div className="toggle-off-all-btn">
-                    <Button onClick={handleToggleOffAll}>
-                        すべてスイッチオフ
-                    </Button>
-                </div>
-            </div>
+            <Button className="prefecture-list__toggle-off-all-btn" onClick={handleToggleOffAll}>
+                すべてスイッチオフ
+            </Button>
         </>
 
     );

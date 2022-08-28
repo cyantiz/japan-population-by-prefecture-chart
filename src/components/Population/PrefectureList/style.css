@@ -1,0 +1,57 @@
+
+.prefecture-list__list {
+    display: flex;
+    /* flex-direction: column; */
+    width: calc(3 * 8.25rem + 2 * 0.75rem);
+    height: 28rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0 0 0;
+    padding: .5rem 0;
+    list-style: none;
+    margin-block: auto;
+    overflow-y: scroll;
+}
+
+.prefecture-list__list .prefecture-list__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 8.25rem;
+    font-size: 1rem;
+}
+
+.prefecture-list__toggle-off-all-btn {
+    margin-top: 1rem;
+    width: 100% !important;
+}
+
+
+@media (max-width: 1179px) {
+    .prefecture-list__list {
+        flex-direction: row;
+        margin-inline: auto;
+        width: 80%;
+        height: auto;
+        margin-block: 0; 
+        justify-content: space-around;
+    }
+
+    .prefecture-list__list .prefecture-list__item {
+        font-size: 0.9rem;
+        width: 7rem;
+        gap: 0.5rem;
+    }
+    .prefecture-list__toggle-off-all-btn {
+        width: auto !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .prefecture-list__list {
+    
+    }
+    .prefecture-list__list .prefecture-list__item {
+        font-size: 0.8rem;
+    }
+}

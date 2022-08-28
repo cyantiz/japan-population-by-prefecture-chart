@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
 import { getAllPrefecture, getNumberOfPopulation } from "@/utils/api";
-import Prefectures from "@/components/Population/Prefectures";
+import Prefectures from "@/components/Population/PrefectureList";
 import PopulationChart from "@/components/Population/Chart";
+import MenuIcon from '@/assets/menu-icon.svg'
 import _ from "lodash";
 
 export default function Population() {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [isShowListMobile, setIsShowListMobile] = useState(false);
 
     // store population data get from api
     const [chartData, setChartData] = React.useState<ChartDataPoint[]>([]);
@@ -46,26 +48,32 @@ export default function Population() {
         const fetchData = async () => {
             setIsLoading(true);
             try {
+                // get data from localStorage, if it is not exist, get from api
                 const numberOfPref = 47;
-                let prefs = JSON.parse(localStorage.getItem("prefectures") || "[]");
-                if (prefs.length === numberOfPref) {
-                    setPrefectures(prefs);
-                } else {
+                let prefs = JSON.parse(
+                    localStorage.getItem("prefectures") || "[]"
+                );
+                if (!prefs || prefs.length !== numberOfPref) {
                     prefs = await getAllPrefecture();
                     setPrefectures(prefs);
-                    console.log('prefs:', prefs);
-                    localStorage.setItem('prefectures', JSON.stringify(prefs));
+                    console.log("prefs:", prefs);
+                    localStorage.setItem("prefectures", JSON.stringify(prefs));
+                } else {
+                    setPrefectures(prefs);
                 }
 
-                const chartData = JSON.parse(localStorage.getItem("chartData") || "[]");
+                const chartData = JSON.parse(
+                    localStorage.getItem("chartData") || "[]"
+                );
                 if (chartData.length > 0) {
                     setChartData(chartData);
-                    const loadedPrefs =  JSON.parse(localStorage.getItem("loadedPrefectures") || "[]");
-                    if (loadedPrefs.length > 0) {   
+                    const loadedPrefs = JSON.parse(
+                        localStorage.getItem("loadedPrefectures") || "[]"
+                    );
+                    if (loadedPrefs.length > 0) {
                         setLoadedPrefectures(loadedPrefs);
                     }
-                }    
-                else {
+                } else {
                     // init data for chartData
                     const firstYearInData = 1960;
                     const lastYearInData = 2045;
@@ -79,9 +87,9 @@ export default function Population() {
                     }
                     setChartData(tmpData);
                 }
-
             } catch (e) {
                 setIsError(true);
+                localStorage.clear();
             } finally {
                 setIsLoading(false);
             }
@@ -104,31 +112,41 @@ export default function Population() {
         setChartData(tmpData);
         setLoadedPrefectures([...loadedPrefectures, pref]);
         localStorage.setItem("chartData", JSON.stringify(tmpData));
-        localStorage.setItem("loadedPrefectures", JSON.stringify([...loadedPrefectures, pref]));
+        localStorage.setItem(
+            "loadedPrefectures",
+            JSON.stringify([...loadedPrefectures, pref])
+        );
     };
 
+    const handleToggleListMobile = () => {
+        setIsShowListMobile(!isShowListMobile);
+    }
+
     return (
-        <div className="container">
-            <h2 className="title">都道府県別の総人口推移グラフ</h2>
-            {isLoading && <div>Loading...</div>}
+        <div className="population__container">
+            <div className="population__navbar">
+                <div className="population__navbar__title">
+                    <h2>都道府県別の総人口推移グラフ</h2>
+                </div>
+                <div className="population__navbar__toggle-show-pref-list">
+                    <img className="menu-icon" src={MenuIcon} alt="#" onClick={handleToggleListMobile} />
+                </div>
+            </div>
+            {isLoading && <div className="__loading">Loading...</div>}
             {isError && <div>Error</div>}
             {!isLoading && !isError && (
                 <>
-                    <div className="flex">
-                        <div className="prefecture-list-wrapper">
-                            {!isLoading && !isError && (
-                                <Prefectures
-                                    prefectures={prefectures}
-                                    selectedPrefectures={selectedPrefectures}
-                                    setShowPrefectures={setShowPrefectures}
-                                    setSelectedPrefectures={
-                                        setSelectedPrefecture
-                                    }
-                                    addData={addData}
-                                />
-                            )}
+                    <div className="population__content">
+                        <div className={"population__prefecture-list-wrapper" + (isShowListMobile ? " mobile-active" : "") }>
+                            <Prefectures
+                                prefectures={prefectures}
+                                selectedPrefectures={selectedPrefectures}
+                                setShowPrefectures={setShowPrefectures}
+                                setSelectedPrefectures={setSelectedPrefecture}
+                                addData={addData}
+                            />
                         </div>
-                        <div className="chart-wrapper">
+                        <div className="population__chart-wrapper">
                             <PopulationChart
                                 showPrefectures={showPrefectures}
                                 data={chartData}

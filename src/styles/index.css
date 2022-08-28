@@ -12,47 +12,12 @@
 body {
     padding: 0;
     margin: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
     font-family: 'Roboto', 'Zen Kaku Gothic New', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0
-}
-
-.flex {
-    display: flex;
-}
-.flex-col {
-    flex-direction: column;
-}
-.justify-center {
-    justify-content: center;
-}
-.justify-between {
-    justify-content: space-between;
-}
-.justify-around {
-    justify-content: space-around;
-}
-.justify-start {
-    justify-content: flex-start;
-}
-.justify-end {
-    justify-content: flex-end;
-}
-.items-center   {
-    align-items: center;
-}
-.items-start {
-    align-items: flex-start;
-}
-.items-end {
-    align-items: flex-end;
-}
-
-.w-full {
-    width: 100%;
-}
-.h-full {
-    height: 100%;
 }

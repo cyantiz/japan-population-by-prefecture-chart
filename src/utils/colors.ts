@@ -33,7 +33,7 @@ export default [
     '#ddeca3',
     '#ff0000',
     '#ffff00',
-    '#fff900',
+    '#adadad',
     '#00ff00',
     '#00ffff',
     '#0080ff',
